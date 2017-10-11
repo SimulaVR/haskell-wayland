@@ -61,8 +61,10 @@ generateDataTypes ps = liftM concat $ sequence $ map generateInterface (protocol
     let iname = interfaceName iface
         pname = protocolName ps
         qname = interfaceTypeName pname iname
+        strict = Bang NoSourceUnpackedness NoSourceStrictness
+        derived = mapM conT [mkName "Show", mkName "Eq"]
     constructorType <- [t|$(conT ''Ptr) $(conT $ mkName qname)|]
-    typeDec <- newtypeD (return []) (mkName qname) [] (normalC (mkName qname) [return (NotStrict, constructorType)]) [mkName "Show", mkName "Eq"]
+    typeDec <- newtypeD (return []) (mkName qname) [] Nothing (normalC (mkName qname) [return (strict, constructorType)]) derived
 
     versionInstance <- [d|
       instance ProtocolVersion $(conT $ mkName qname) where
@@ -131,8 +133,10 @@ generateEnums ps = return $ concat $ map eachGenerateEnums (protocolInterfaces p
     generateEnum :: WLEnum -> [Dec]
     generateEnum wlenum =
       let qname = enumTypeName (protocolName ps) (interfaceName iface) (enumName wlenum)
+          strict = Bang NoSourceUnpackedness NoSourceStrictness
+          derived = map ConT [mkName "Show", mkName "Eq"]
       in
-        NewtypeD [] qname [] (NormalC qname [(NotStrict, (ConT ''Int))]) [mkName "Show", mkName "Eq"]
+        NewtypeD [] qname [] Nothing (NormalC qname [(strict, (ConT ''Int))]) derived
         :
         map (\(entry, val) -> (ValD (VarP $ enumEntryHaskName (protocolName ps) (interfaceName iface) (enumName wlenum) entry) (NormalB $ (ConE qname) `AppE` (LitE $ IntegerL $ toInteger val)) [])) (enumEntries wlenum)
 
@@ -320,10 +324,11 @@ generateListenerTypes sp sc = sequence $ map generateListenerType $
         mkListenerConstr :: Message -> VarStrictTypeQ
         mkListenerConstr msg = do
           let name = mkName $ mkMessageName msg
+              strict = Bang NoSourceUnpackedness NoSourceStrictness
           ltype <- mkListenerType msg
-          return (name, NotStrict, ltype)
+          return (name, strict, ltype)
       recArgs <- sequence $ map mkListenerConstr messages
-      return $ DataD [] typeName [] [RecC typeName recArgs] []
+      return $ DataD [] typeName [] Nothing [RecC typeName recArgs] []
 
 -- | For each interface, generate the callback API.
 generateListenerMethods :: ProtocolSpec -> ServerClient -> ProcessWithExports [Dec]

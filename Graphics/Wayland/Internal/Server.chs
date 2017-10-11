@@ -12,7 +12,7 @@ module Graphics.Wayland.Internal.Server (
   eventLoopAddTimer, eventLoopAddSignal, eventSourceTimerUpdate, eventSourceRemove,
   eventSourceCheck, eventLoopDispatch, eventLoopDispatchIdle, eventLoopAddIdle, eventLoopGetFd,
 
-  DisplayServer, displayCreate, displayDestroy, displayGetEventLoop, displayAddSocket,
+  DisplayServer(..), displayCreate, displayDestroy, displayGetEventLoop, displayAddSocket,
   displayTerminate, displayRun, displayFlushClients, displayGetSerial, displayNextSerial,
 
   clientCreate, clientDestroy, clientFlush, clientGetCredentials, clientPostNoMemory,
