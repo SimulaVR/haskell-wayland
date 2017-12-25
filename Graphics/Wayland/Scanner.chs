@@ -1,4 +1,5 @@
 {-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE CPP #-}
 
 module Graphics.Wayland.Scanner (
   generateClientTypes,
@@ -62,10 +63,15 @@ generateDataTypes ps = liftM concat $ sequence $ map generateInterface (protocol
         pname = protocolName ps
         qname = interfaceTypeName pname iname
         strict = Bang NoSourceUnpackedness NoSourceStrictness
+#if MIN_VERSION_base(4, 10, 0)
+        derived = derivClause Nothing $ map conT [mkName "Show", mkName "Eq"]
+    constructorType <- [t|$(conT ''Ptr) $(conT $ mkName qname)|]
+    typeDec <- newtypeD (return []) (mkName qname) [] Nothing (normalC (mkName qname) [return (strict, constructorType)]) [derived]
+#else
         derived = mapM conT [mkName "Show", mkName "Eq"]
     constructorType <- [t|$(conT ''Ptr) $(conT $ mkName qname)|]
     typeDec <- newtypeD (return []) (mkName qname) [] Nothing (normalC (mkName qname) [return (strict, constructorType)]) derived
-
+#endif
     versionInstance <- [d|
       instance ProtocolVersion $(conT $ mkName qname) where
         protocolVersion _ = $(litE $ IntegerL $ fromIntegral $ interfaceVersion iface)
@@ -134,9 +140,15 @@ generateEnums ps = return $ concat $ map eachGenerateEnums (protocolInterfaces p
     generateEnum wlenum =
       let qname = enumTypeName (protocolName ps) (interfaceName iface) (enumName wlenum)
           strict = Bang NoSourceUnpackedness NoSourceStrictness
+#if MIN_VERSION_base(4, 10, 0)
+          derived = DerivClause Nothing $ map ConT [mkName "Show", mkName "Eq"]
+      in
+        NewtypeD [] qname [] Nothing (NormalC qname [(strict, (ConT ''Int))]) [derived]
+#else
           derived = map ConT [mkName "Show", mkName "Eq"]
       in
         NewtypeD [] qname [] Nothing (NormalC qname [(strict, (ConT ''Int))]) derived
+#endif
         :
         map (\(entry, val) -> (ValD (VarP $ enumEntryHaskName (protocolName ps) (interfaceName iface) (enumName wlenum) entry) (NormalB $ (ConE qname) `AppE` (LitE $ IntegerL $ toInteger val)) [])) (enumEntries wlenum)
 
