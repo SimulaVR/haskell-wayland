@@ -255,7 +255,7 @@ withMaybeCString (Just str) fun = withCString str fun
 {#fun unsafe client_create as clientCreate {`DisplayServer', unFd `Fd'} -> `Maybe Client' receiveMaybeClient #}
 
 -- | void wl_client_destroy(struct wl_client *client);
-{#fun unsafe client_destroy as clientDestroy {`Client'} -> `()' #}
+{#fun client_destroy as clientDestroy {`Client'} -> `()' #}
 
 -- | void wl_client_flush(struct wl_client *client);
 {#fun unsafe client_flush as clientFlush {`Client'} -> `()' #}
