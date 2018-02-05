@@ -208,7 +208,7 @@ receiveMaybeClient (Client x)
 {#fun unsafe display_create as displayCreate {} -> `DisplayServer' #}
 
 -- | void wl_display_destroy(struct wl_display *display);
-{#fun unsafe display_destroy as displayDestroy {`DisplayServer'} -> `()' #}
+{#fun display_destroy as displayDestroy {`DisplayServer'} -> `()' #}
 
 -- | struct wl_event_loop *wl_display_get_event_loop(struct wl_display *display);
 {#fun unsafe display_get_event_loop as displayGetEventLoop {`DisplayServer'} -> `EventLoop' #}
@@ -220,7 +220,7 @@ withMaybeCString (Just str) fun = withCString str fun
 {#fun unsafe display_add_socket as displayAddSocket {`DisplayServer', withMaybeCString* `Maybe String'} -> `Result' errToResult #}
 
 -- | void wl_display_terminate(struct wl_display *display);
-{#fun unsafe display_terminate as displayTerminate {`DisplayServer'} -> `()' #}
+{#fun display_terminate as displayTerminate {`DisplayServer'} -> `()' #}
 
 -- | void wl_display_run(struct wl_display *display);
 --
@@ -277,7 +277,7 @@ peekGid = liftM CGid . liftM fromIntegral . peek
 -- wl_client_get_object(struct wl_client *client, uint32_t id);
 -- void
 -- | wl_client_post_no_memory(struct wl_client *client);
-{#fun unsafe client_post_no_memory as clientPostNoMemory {`Client'} -> `()' #}
+{#fun client_post_no_memory as clientPostNoMemory {`Client'} -> `()' #}
 
 -- /** \class wl_listener
 --  *
