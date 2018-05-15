@@ -16,7 +16,7 @@ author:              Auke Booij
 maintainer:          auke@tulcod.com
 -- copyright:
 category:            Graphics
-build-type:          Custom
+build-type:          Simple
 extra-source-files:  README.md, NOTES.md
 cabal-version:       >=1.10
 
