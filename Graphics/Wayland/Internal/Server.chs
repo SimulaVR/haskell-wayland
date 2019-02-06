@@ -121,41 +121,41 @@ marshallEventLoopIdleFunc func = makeIdleFunPtr $ \ _ -> func
 melif = makeWith marshallEventLoopIdleFunc
 
 -- |struct wl_event_loop *wl_event_loop_create(void);
-{#fun unsafe event_loop_create as eventLoopCreate {} -> `EventLoop' #}
+{#fun event_loop_create as eventLoopCreate {} -> `EventLoop' #}
 
 -- |void wl_event_loop_destroy(struct wl_event_loop *loop);
-{#fun unsafe event_loop_destroy as eventLoopDestroy {`EventLoop'} -> `()' #}
+{#fun event_loop_destroy as eventLoopDestroy {`EventLoop'} -> `()' #}
 
 -- | struct wl_event_source *wl_event_loop_add_fd(struct wl_event_loop *loop,
 -- 					     int fd, uint32_t mask,
 -- 					     wl_event_loop_fd_func_t func,
 -- 					     void *data);
-{#fun unsafe event_loop_add_fd as eventLoopAddFd {`EventLoop', unFd `Fd', fromIntegral `ClientState', melff* `EventLoopFdFunc', withNullPtr- `Ptr ()'} -> `EventSource' #}
+{#fun event_loop_add_fd as eventLoopAddFd {`EventLoop', unFd `Fd', fromIntegral `ClientState', melff* `EventLoopFdFunc', withNullPtr- `Ptr ()'} -> `EventSource' #}
 
 -- | int wl_event_source_fd_update(struct wl_event_source *source, uint32_t mask);
-{#fun unsafe event_source_fd_update as eventSourceFdUpdate {`EventSource', fromIntegral `ClientState'} -> `Result' errToResult #}
+{#fun event_source_fd_update as eventSourceFdUpdate {`EventSource', fromIntegral `ClientState'} -> `Result' errToResult #}
 
 -- | struct wl_event_source *wl_event_loop_add_timer(struct wl_event_loop *loop,
 -- 						wl_event_loop_timer_func_t func,
 -- 						void *data);
-{#fun unsafe event_loop_add_timer as eventLoopAddTimer {`EventLoop', meltf* `EventLoopTimerFunc', withNullPtr- `Ptr ()'} -> `EventSource'#}
+{#fun event_loop_add_timer as eventLoopAddTimer {`EventLoop', meltf* `EventLoopTimerFunc', withNullPtr- `Ptr ()'} -> `EventSource'#}
 
 -- | struct wl_event_source *
 -- wl_event_loop_add_signal(struct wl_event_loop *loop,
 -- 			int signal_number,
 -- 			wl_event_loop_signal_func_t func,
 -- 			void *data);
-{#fun unsafe event_loop_add_signal as eventLoopAddSignal {`EventLoop', `Int', melsf* `EventLoopSignalFunc', withNullPtr- `Ptr ()'} -> `EventSource' #}
+{#fun event_loop_add_signal as eventLoopAddSignal {`EventLoop', `Int', melsf* `EventLoopSignalFunc', withNullPtr- `Ptr ()'} -> `EventSource' #}
 
 -- | int wl_event_source_timer_update(struct wl_event_source *source,
 -- 				 int ms_delay);
-{#fun unsafe event_source_timer_update as eventSourceTimerUpdate {`EventSource', `Int'} -> `Result' errToResult #}
+{#fun event_source_timer_update as eventSourceTimerUpdate {`EventSource', `Int'} -> `Result' errToResult #}
 
 -- | int wl_event_source_remove(struct wl_event_source *source);
-{#fun unsafe event_source_remove as eventSourceRemove {`EventSource'} -> `()' #}
+{#fun event_source_remove as eventSourceRemove {`EventSource'} -> `()' #}
 
 -- | void wl_event_source_check(struct wl_event_source *source);
-{#fun unsafe event_source_check as eventSourceCheck {`EventSource'} -> `()' #}
+{#fun event_source_check as eventSourceCheck {`EventSource'} -> `()' #}
 
 -- | int wl_event_loop_dispatch(struct wl_event_loop *loop, int timeout);
 --
@@ -171,7 +171,7 @@ melif = makeWith marshallEventLoopIdleFunc
 {#fun event_loop_add_idle as eventLoopAddIdle {`EventLoop', melif* `EventLoopIdleFunc', withNullPtr- `Ptr ()'} -> `EventSource' #}
 
 -- | int wl_event_loop_get_fd(struct wl_event_loop *loop);
-{#fun unsafe event_loop_get_fd as eventLoopGetFd {`EventLoop'} -> `Fd' Fd #}
+{#fun event_loop_get_fd as eventLoopGetFd {`EventLoop'} -> `Fd' Fd #}
 
 
 -- EXPOSED UNTIL HERE
@@ -205,19 +205,19 @@ receiveMaybeClient (Client x)
 -- 					wl_notify_func_t notify);
 
 -- | struct wl_display *wl_display_create(void);
-{#fun unsafe display_create as displayCreate {} -> `DisplayServer' #}
+{#fun display_create as displayCreate {} -> `DisplayServer' #}
 
 -- | void wl_display_destroy(struct wl_display *display);
 {#fun display_destroy as displayDestroy {`DisplayServer'} -> `()' #}
 
 -- | struct wl_event_loop *wl_display_get_event_loop(struct wl_display *display);
-{#fun unsafe display_get_event_loop as displayGetEventLoop {`DisplayServer'} -> `EventLoop' #}
+{#fun display_get_event_loop as displayGetEventLoop {`DisplayServer'} -> `EventLoop' #}
 
 -- | int wl_display_add_socket(struct wl_display *display, const char *name);
 withMaybeCString :: Maybe String -> (CString -> IO a) -> IO a
 withMaybeCString Nothing fun = fun nullPtr
 withMaybeCString (Just str) fun = withCString str fun
-{#fun unsafe display_add_socket as displayAddSocket {`DisplayServer', withMaybeCString* `Maybe String'} -> `Result' errToResult #}
+{#fun display_add_socket as displayAddSocket {`DisplayServer', withMaybeCString* `Maybe String'} -> `Result' errToResult #}
 
 -- | void wl_display_terminate(struct wl_display *display);
 {#fun display_terminate as displayTerminate {`DisplayServer'} -> `()' #}
@@ -235,10 +235,10 @@ withMaybeCString (Just str) fun = withCString str fun
 
 -- not sure what these two functions are for
 -- | uint32_t wl_display_get_serial(struct wl_display *display);
-{#fun unsafe display_get_serial as displayGetSerial {`DisplayServer'} -> `Word' fromIntegral #}
+{#fun display_get_serial as displayGetSerial {`DisplayServer'} -> `Word' fromIntegral #}
 
 -- | uint32_t wl_display_next_serial(struct wl_display *display);
-{#fun unsafe display_next_serial as displayNextSerial {`DisplayServer'} -> `Word' fromIntegral #}
+{#fun display_next_serial as displayNextSerial {`DisplayServer'} -> `Word' fromIntegral #}
 
 -- void wl_display_add_destroy_listener(struct wl_display *display,
 -- 				     struct wl_listener *listener);
@@ -252,20 +252,20 @@ withMaybeCString (Just str) fun = withCString str fun
 -- void wl_global_destroy(struct wl_global *global);
 
 -- | struct wl_client *wl_client_create(struct wl_display *display, int fd);
-{#fun unsafe client_create as clientCreate {`DisplayServer', unFd `Fd'} -> `Maybe Client' receiveMaybeClient #}
+{#fun client_create as clientCreate {`DisplayServer', unFd `Fd'} -> `Maybe Client' receiveMaybeClient #}
 
 -- | void wl_client_destroy(struct wl_client *client);
 {#fun client_destroy as clientDestroy {`Client'} -> `()' #}
 
 -- | void wl_client_flush(struct wl_client *client);
-{#fun unsafe client_flush as clientFlush {`Client'} -> `()' #}
+{#fun client_flush as clientFlush {`Client'} -> `()' #}
 
 peekPid = liftM CPid . liftM fromIntegral . peek
 peekUid = liftM CUid . liftM fromIntegral . peek
 peekGid = liftM CGid . liftM fromIntegral . peek
 -- | void wl_client_get_credentials(struct wl_client *client,
 -- 			       pid_t *pid, uid_t *uid, gid_t *gid);
-{#fun unsafe client_get_credentials as clientGetCredentials {`Client', alloca- `ProcessID' peekPid*, alloca- `UserID' peekUid*, alloca- `GroupID' peekGid*} -> `()' #}
+{#fun client_get_credentials as clientGetCredentials {`Client', alloca- `ProcessID' peekPid*, alloca- `UserID' peekUid*, alloca- `GroupID' peekGid*} -> `()' #}
 
 -- void wl_client_add_destroy_listener(struct wl_client *client,
 -- 				    struct wl_listener *listener);
@@ -527,50 +527,50 @@ receiveMaybeShmBuffer (ShmBuffer x)
 --
 -- Lock the memory for reading. Needed to protect the server against SIGBUS signals
 -- caused by the client resizing the buffer.
-{#fun unsafe shm_buffer_begin_access as shmBufferBeginAccess {`ShmBuffer'} -> `()' #}
+{#fun shm_buffer_begin_access as shmBufferBeginAccess {`ShmBuffer'} -> `()' #}
 
 -- |void
 -- wl_shm_buffer_end_access(struct wl_shm_buffer *buffer);
 --
 -- Unlock the memory.
-{#fun unsafe shm_buffer_end_access as shmBufferEndAccess {`ShmBuffer'} -> `()' #}
+{#fun shm_buffer_end_access as shmBufferEndAccess {`ShmBuffer'} -> `()' #}
 
 -- | struct wl_shm_buffer *
 -- wl_shm_buffer_get(struct wl_resource *resource);
-{#fun unsafe shm_buffer_get as shmBufferGet {`Buffer'} -> `Maybe ShmBuffer' receiveMaybeShmBuffer #}
+{#fun shm_buffer_get as shmBufferGet {`Buffer'} -> `Maybe ShmBuffer' receiveMaybeShmBuffer #}
 
 -- | void *
 -- wl_shm_buffer_get_data(struct wl_shm_buffer *buffer);
-{#fun unsafe shm_buffer_get_data as shmBufferGetData {`ShmBuffer'} -> `Ptr ()' id #}
+{#fun shm_buffer_get_data as shmBufferGetData {`ShmBuffer'} -> `Ptr ()' id #}
 
 -- | int32_t
 -- wl_shm_buffer_get_stride(struct wl_shm_buffer *buffer);
-{#fun unsafe shm_buffer_get_stride as shmBufferGetStride {`ShmBuffer'} -> `Int' #}
+{#fun shm_buffer_get_stride as shmBufferGetStride {`ShmBuffer'} -> `Int' #}
 
 -- | uint32_t
 -- wl_shm_buffer_get_format(struct wl_shm_buffer *buffer);
-{#fun unsafe shm_buffer_get_format as shmBufferGetFormat {`ShmBuffer'} -> `Word' fromIntegral#}
+{#fun shm_buffer_get_format as shmBufferGetFormat {`ShmBuffer'} -> `Word' fromIntegral#}
 
 -- | int32_t
 -- wl_shm_buffer_get_width(struct wl_shm_buffer *buffer);
-{#fun unsafe shm_buffer_get_width as shmBufferGetWidth {`ShmBuffer'} -> `Int' #}
+{#fun shm_buffer_get_width as shmBufferGetWidth {`ShmBuffer'} -> `Int' #}
 
 -- | int32_t
 -- wl_shm_buffer_get_height(struct wl_shm_buffer *buffer);
-{#fun unsafe shm_buffer_get_height as shmBufferGetHeight {`ShmBuffer'} -> `Int' #}
+{#fun shm_buffer_get_height as shmBufferGetHeight {`ShmBuffer'} -> `Int' #}
 
 -- | int
 -- wl_display_init_shm(struct wl_display *display);
-{#fun unsafe display_init_shm as displayInitShm {`DisplayServer'} -> `Result' errToResult #}
+{#fun display_init_shm as displayInitShm {`DisplayServer'} -> `Result' errToResult #}
 
 -- | uint32_t *
 -- wl_display_add_shm_format(struct wl_display *display, uint32_t format);
-{#fun unsafe display_add_shm_format as displayAddShmFormat {`DisplayServer', fromIntegral `Word'} -> `()' #}
+{#fun display_add_shm_format as displayAddShmFormat {`DisplayServer', fromIntegral `Word'} -> `()' #}
 
 -- | struct wl_shm_buffer *
 -- wl_shm_buffer_create(struct wl_client *client,
 -- 		     uint32_t id, int32_t width, int32_t height,
 -- 		     int32_t stride, uint32_t format);
-{#fun unsafe shm_buffer_create as shmBufferCreate {`Client', fromIntegral `Word', fromIntegral `Word', `Int', `Int', fromIntegral `Word'} -> `Maybe ShmBuffer' receiveMaybeShmBuffer#}
+{#fun shm_buffer_create as shmBufferCreate {`Client', fromIntegral `Word', fromIntegral `Word', `Int', `Int', fromIntegral `Word'} -> `Maybe ShmBuffer' receiveMaybeShmBuffer#}
 
 -- void wl_log_set_handler_server(wl_log_func_t handler);

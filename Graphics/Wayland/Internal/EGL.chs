@@ -27,17 +27,17 @@ import Graphics.Wayland.Internal.SpliceClientTypes (Surface(..))
 -- struct wl_egl_window *
 -- wl_egl_window_create(struct wl_surface *surface,
 -- 		     int width, int height);
-{#fun unsafe egl_window_create as eglWindowCreate {`Surface', `Int', `Int'} -> `EGLWindow' #}
+{#fun egl_window_create as eglWindowCreate {`Surface', `Int', `Int'} -> `EGLWindow' #}
 
 -- void
 -- wl_egl_window_destroy(struct wl_egl_window *egl_window);
-{#fun unsafe egl_window_destroy as eglWindowDestroy {`EGLWindow'} -> `()' #}
+{#fun egl_window_destroy as eglWindowDestroy {`EGLWindow'} -> `()' #}
 
 -- void
 -- wl_egl_window_resize(struct wl_egl_window *egl_window,
 -- 		     int width, int height,
 -- 		     int dx, int dy);
-{#fun unsafe egl_window_resize as eglWindowResize {`EGLWindow', `Int', `Int', `Int', `Int'} -> `()' #}
+{#fun egl_window_resize as eglWindowResize {`EGLWindow', `Int', `Int', `Int', `Int'} -> `()' #}
 
 
 -- void
@@ -45,4 +45,4 @@ import Graphics.Wayland.Internal.SpliceClientTypes (Surface(..))
 -- 				int *width, int *height);
 -- withInt = with.fromIntegral 0
 peekInt = liftM fromIntegral . peek
-{#fun unsafe egl_window_get_attached_size as eglWindowGetAttachedSize {`EGLWindow', alloca- `Int' peekInt*, alloca- `Int' peekInt*} -> `()' #}
+{#fun egl_window_get_attached_size as eglWindowGetAttachedSize {`EGLWindow', alloca- `Int' peekInt*, alloca- `Int' peekInt*} -> `()' #}

@@ -72,24 +72,24 @@ cursorImages (Cursor c) = unsafePerformIO $ do
 
 -- | struct wl_cursor_theme *
 -- wl_cursor_theme_load(const char *name, int size, struct wl_shm *shm);
-{#fun unsafe cursor_theme_load as cursorThemeLoad {`String', `Int', `Shm'} -> `CursorTheme'#}
+{#fun cursor_theme_load as cursorThemeLoad {`String', `Int', `Shm'} -> `CursorTheme'#}
 
 -- | void
 -- wl_cursor_theme_destroy(struct wl_cursor_theme *theme);
-{#fun unsafe cursor_theme_destroy as cursorThemeDestroy {`CursorTheme'} -> `()' #}
+{#fun cursor_theme_destroy as cursorThemeDestroy {`CursorTheme'} -> `()' #}
 
 -- | struct wl_cursor *
 -- wl_cursor_theme_get_cursor(struct wl_cursor_theme *theme,
 -- 			   const char *name);
-{#fun unsafe cursor_theme_get_cursor as cursorThemeGetCursor {`CursorTheme', `String'} -> `Cursor' #}
+{#fun cursor_theme_get_cursor as cursorThemeGetCursor {`CursorTheme', `String'} -> `Cursor' #}
 
 {#pointer * buffer as Buffer nocode#}
 -- | struct wl_buffer *
 -- wl_cursor_image_get_buffer(struct wl_cursor_image *image);
 --
 -- From the wayland docs: do not destroy the returned buffer.
-{#fun unsafe cursor_image_get_buffer as cursorImageGetBuffer {`CursorImage'} -> `Buffer' #}
+{#fun cursor_image_get_buffer as cursorImageGetBuffer {`CursorImage'} -> `Buffer' #}
 
 -- | int
 -- wl_cursor_frame(struct wl_cursor *cursor, uint32_t time);
-{#fun unsafe cursor_frame as cursorFrame {`Cursor', `Int'} -> `Int' #}
+{#fun cursor_frame as cursorFrame {`Cursor', `Int'} -> `Int' #}

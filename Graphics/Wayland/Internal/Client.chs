@@ -62,7 +62,7 @@ code0ToNothing    = codeToNothing 0    . fromIntegral
 
 
 -- -- void wl_event_queue_destroy(struct wl_event_queue *queue);
--- {#fun unsafe event_queue_destroy as ^ {`EventQueue'} -> `()'#}
+-- {#fun event_queue_destroy as ^ {`EventQueue'} -> `()'#}
 
 -- void wl_proxy_marshal(struct wl_proxy *p, uint32_t opcode, ...);
 
@@ -102,20 +102,20 @@ receiveMaybeDisplay (Display x)
 
 -- struct wl_display *wl_display_connect(const char *name);
 -- | Connect to a display with a specified name
-{#fun unsafe display_connect as displayConnectName {`String'} -> `Maybe Display' receiveMaybeDisplay #}
+{#fun display_connect as displayConnectName {`String'} -> `Maybe Display' receiveMaybeDisplay #}
 
 -- | Connect to the default display by passing a null pointer
-{#fun unsafe display_connect as displayConnect {withNullPtr- `Ptr CChar'} -> `Maybe Display' receiveMaybeDisplay #}
+{#fun display_connect as displayConnect {withNullPtr- `Ptr CChar'} -> `Maybe Display' receiveMaybeDisplay #}
 
 -- struct wl_display *wl_display_connect_to_fd(int fd);
 -- | Connect to a display by file descriptor
-{#fun unsafe display_connect_to_fd as displayConnectFd {unFd `Fd'} -> `Maybe Display' receiveMaybeDisplay #}
+{#fun display_connect_to_fd as displayConnectFd {unFd `Fd'} -> `Maybe Display' receiveMaybeDisplay #}
 
 -- void wl_display_disconnect(struct wl_display *display);
-{#fun unsafe display_disconnect as displayDisconnect {`Display'} -> `()' #}
+{#fun display_disconnect as displayDisconnect {`Display'} -> `()' #}
 
 -- int wl_display_get_fd(struct wl_display *display);
-{#fun unsafe display_get_fd as displayGetFd {`Display'} -> `Fd' Fd #}
+{#fun display_get_fd as displayGetFd {`Display'} -> `Fd' Fd #}
 
 -- int wl_display_dispatch(struct wl_display *display);
 -- | wl_display_dispatch. Returns @Nothing@ on failure or @Just k@ if k events were processed.
@@ -147,7 +147,7 @@ receiveMaybeDisplay (Display x)
 -- | @Nothing@ if no error occurred or @Just k@ if the latest error had code k
 --
 -- Note (from the wayland documentation): errors are fatal. If this function returns a @Just@ value, the display can no longer be used.
-{#fun unsafe display_get_error as displayGetError {`Display'} -> `Maybe Int' code0ToNothing #}
+{#fun display_get_error as displayGetError {`Display'} -> `Maybe Int' code0ToNothing #}
 
 -- int wl_display_flush(struct wl_display *display);
 -- | @Nothing@ on failure or @Just k@ if k bytes were sent
@@ -163,23 +163,23 @@ receiveMaybeDisplay (Display x)
 
 -- -- struct wl_event_queue *wl_display_create_queue(struct wl_display *display);
 -- -- | Docs say that wl_display_create_queue may return NULL on failure, but that only happens when it's out of memory
--- {#fun unsafe display_create_queue as displayCreateQueue {`Display'} -> `EventQueue' #}
+-- {#fun display_create_queue as displayCreateQueue {`Display'} -> `EventQueue' #}
 
 -- -- int wl_display_prepare_read_queue(struct wl_display *display,
 -- --                                   struct wl_event_queue *queue);
--- {#fun unsafe display_prepare_read_queue as displayPrepareReadQueue {`Display', `EventQueue'} -> `Result' errToResult #}
+-- {#fun display_prepare_read_queue as displayPrepareReadQueue {`Display', `EventQueue'} -> `Result' errToResult #}
 
 -- int wl_display_prepare_read(struct wl_display *display);
-{#fun unsafe display_prepare_read as displayPrepareRead {`Display'} -> `Result' errToResult #}
+{#fun display_prepare_read as displayPrepareRead {`Display'} -> `Result' errToResult #}
 
 -- void wl_display_cancel_read(struct wl_display *display);
-{#fun unsafe display_cancel_read as displayCancelRead {`Display'} -> `()' #}
+{#fun display_cancel_read as displayCancelRead {`Display'} -> `()' #}
 
 -- int wl_display_read_events(struct wl_display *display);
 -- | This will read events from the file descriptor for the display.
 --   This function does not dispatch events, it only reads and queues events into their corresponding event queues.
 --
 --   Before calling this function, wl_display_prepare_read() must be called first.
-{#fun unsafe display_read_events as displayReadEvents {`Display'} -> `Result' errToResult #}
+{#fun display_read_events as displayReadEvents {`Display'} -> `Result' errToResult #}
 
 -- void wl_log_set_handler_client(wl_log_func_t handler);
