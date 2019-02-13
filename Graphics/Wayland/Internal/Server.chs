@@ -4,7 +4,7 @@ module Graphics.Wayland.Internal.Server (
   ClientState(..), clientStateReadable, clientStateWritable, clientStateHangup,
   clientStateError,
 
-  EventLoop, EventSource,
+  EventLoop(..), EventSource,
 
   EventLoopFdFunc, EventLoopTimerFunc, EventLoopSignalFunc, EventLoopIdleFunc,
 
