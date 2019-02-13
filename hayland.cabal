@@ -30,7 +30,6 @@ library
     Graphics.Wayland.Client,
     Graphics.Wayland.Server,
     Graphics.Wayland.Scanner
-  other-modules:
     Graphics.Wayland.Internal,
     Graphics.Wayland.Internal.Client,
     Graphics.Wayland.Internal.Cursor,
